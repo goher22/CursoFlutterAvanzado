@@ -10,13 +10,17 @@ const io = require('socket.io')(server);
 
 //Mensaje de socket
 io.on('connection', client => {
-    client.on('connect', () => {
-        console.log("Cliente conectado")
-    });
+    console.log("Cliente conectado")
 
     client.on('disconnect', () => {
         console.log("Cliente desconectado")
     });
+
+    client.on('mensaje', (payload) => {
+        console.log("Mensaje !!!!!", payload)
+
+        io.emit("mensaje", {admin: "Nuevo Mensaje"});
+    })
 });
 
 //path publico

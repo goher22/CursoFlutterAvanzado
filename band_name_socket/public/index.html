@@ -17,6 +17,13 @@
         socket.on('disconnect', function () {
             console.log("Perdimos la comunicacion con el servidor ")
         })
+
+        socket.emit('mensaje', {nombre: "Carlos"});
+
+        socket.on('mensaje', (payload) => {
+            console.log("Mensaje ===>", payload)
+        })
+
     </script>
 </body>
 </html>
