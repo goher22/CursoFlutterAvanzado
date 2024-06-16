@@ -1,3 +1,4 @@
+const Band = require("./band");
 class Bands {
     constructor(){
         this.bands = [];
