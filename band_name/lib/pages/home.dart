@@ -25,11 +25,13 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     final socketService = Provider.of<SocketService>(context, listen: false);
-    socketService.socket.on("active-bands", (payload) {
-      bands = (payload as List).map((band) => Band.fromMap(band)).toList();
-      setState(() {});
-    });
+    socketService.socket.on("active-bands", _handleActiveBands);
     super.initState();
+  }
+
+  _handleActiveBands(dynamic payload) {
+    bands = (payload as List).map((band) => Band.fromMap(band)).toList();
+    setState(() {});
   }
 
   @override
@@ -87,9 +89,8 @@ class _HomePageState extends State<HomePage> {
     return Dismissible(
       key: Key(band.id),
       direction: DismissDirection.startToEnd,
-      onDismissed: (direction) {
-        //TODO: LLAMAR EL METODO DE BORRADO EN EL SERVER
-      },
+      onDismissed: (direction) =>
+          socketService.socket.emit('delete-band', {"id": band.id}),
       background: Container(
         padding: const EdgeInsets.only(left: 8.0),
         color: Colors.red,
@@ -117,9 +118,7 @@ class _HomePageState extends State<HomePage> {
             fontSize: 20,
           ),
         ),
-        onTap: () {
-          socketService.socket.emit('vote-band', {"id": band.id});
-        },
+        onTap: () => socketService.socket.emit('vote-band', {"id": band.id}),
       ),
     );
   }
