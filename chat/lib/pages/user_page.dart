@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../models/user.dart';
 
@@ -15,6 +16,10 @@ class _UsuariosPageState extends State<UsuariosPage> {
     User(uid: '2', name: 'Marina', email: 'text2@tes.com', online: true),
     User(uid: '3', name: 'Juan', email: 'text3@tes.com', online: false),
   ];
+
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,26 +53,54 @@ class _UsuariosPageState extends State<UsuariosPage> {
           ),
         ],
       ),
-      body: ListView.separated(
-        itemCount: users.length,
-        separatorBuilder: (_, i) => Divider(),
-        itemBuilder: (_, i) => ListTile(
-          title: Text(users[i].name),
-          leading: CircleAvatar(
-            child: Text(
-              users[i].name.toUpperCase().substring(0, 2),
-            ),
+      body: SmartRefresher(
+        controller: _refreshController,
+        enablePullDown: true,
+        onRefresh: _loadUsers,
+        header: WaterDropHeader(
+          complete: Icon(
+            Icons.check,
+            color: Colors.blue[400],
           ),
-          trailing: Container(
-            width: 10,
-            height: 10,
-            decoration: BoxDecoration(
-              color: users[i].online ? Colors.green[300] : Colors.red,
-              borderRadius: BorderRadius.circular(100),
-            ),
-          ),
+          waterDropColor: Colors.blue[400]!,
+        ),
+        child: _listViewUsers(),
+      ),
+    );
+  }
+
+  ListView _listViewUsers() {
+    return ListView.separated(
+      itemCount: users.length,
+      separatorBuilder: (_, i) => const Divider(),
+      itemBuilder: (_, i) => _userListTitle(users[i]),
+    );
+  }
+
+  ListTile _userListTitle(User user) {
+    return ListTile(
+      title: Text(user.name),
+      leading: CircleAvatar(
+        backgroundColor: Colors.blue[100],
+        child: Text(
+          user.name.toUpperCase().substring(0, 2),
+        ),
+      ),
+      trailing: Container(
+        width: 10,
+        height: 10,
+        decoration: BoxDecoration(
+          color: user.online ? Colors.green[300] : Colors.red,
+          borderRadius: BorderRadius.circular(100),
         ),
       ),
     );
+  }
+
+  _loadUsers() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1000),
+    );
+    _refreshController.refreshCompleted();
   }
 }
