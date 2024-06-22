@@ -13,54 +13,56 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
+  bool _isWrite = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Column(
-            children: [
-              CircleAvatar(
-                backgroundColor: Colors.blue[100],
-                maxRadius: 14,
-                child: const Text(
-                  "TE",
-                  style: TextStyle(fontSize: 12),
-                ),
-              ),
-              const SizedBox(
-                height: 3,
-              ),
-              const Text(
-                "Maria Eli",
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 12,
-                ),
-              )
-            ],
-          ),
-          centerTitle: true,
-          elevation: 1,
-        ),
-        body: Column(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Column(
           children: [
-            Flexible(
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                reverse: true,
-                itemBuilder: (_, i) => Text('$i'),
+            CircleAvatar(
+              backgroundColor: Colors.blue[100],
+              maxRadius: 14,
+              child: const Text(
+                "TE",
+                style: TextStyle(fontSize: 12),
               ),
             ),
-            const Divider(
-              height: 1,
+            const SizedBox(
+              height: 3,
             ),
-            Container(
-              color: Colors.white,
-              child: _inputChat(),
+            const Text(
+              "Maria Eli",
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 12,
+              ),
             )
           ],
-        ));
+        ),
+        centerTitle: true,
+        elevation: 1,
+      ),
+      body: Column(
+        children: [
+          Flexible(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              reverse: true,
+              itemBuilder: (_, i) => Text('$i'),
+            ),
+          ),
+          const Divider(
+            height: 1,
+          ),
+          Container(
+            color: Colors.white,
+            child: _inputChat(),
+          )
+        ],
+      ),
+    );
   }
 
   Widget _inputChat() {
@@ -78,7 +80,15 @@ class _ChatPageState extends State<ChatPage> {
                 ),
                 controller: _textController,
                 focusNode: _focusNode,
-                onChanged: (String texto) {},
+                onChanged: (String texto) {
+                  setState(() {
+                    if (texto.trim().isNotEmpty) {
+                      _isWrite = true;
+                    } else {
+                      _isWrite = false;
+                    }
+                  });
+                },
                 onSubmitted: _handleSubmit,
               ),
             ),
@@ -86,17 +96,25 @@ class _ChatPageState extends State<ChatPage> {
               margin: const EdgeInsets.symmetric(horizontal: 4.0),
               child: Platform.isIOS
                   ? CupertinoButton(
-                      child: Text("Enviar"),
-                      onPressed: () {},
+                      onPressed: _isWrite
+                          ? () => _handleSubmit(_textController.text.trim())
+                          : null,
+                      child: const Text("Enviar"),
                     )
                   : Container(
-                      margin: EdgeInsets.symmetric(horizontal: 4.0),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.send,
+                      margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                      child: IconTheme(
+                        data: IconThemeData(
                           color: Colors.blue[400],
                         ),
-                        onPressed: () {},
+                        child: IconButton(
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          icon: const Icon(Icons.send),
+                          onPressed: _isWrite
+                              ? () => _handleSubmit(_textController.text.trim())
+                              : null,
+                        ),
                       ),
                     ),
             )
@@ -110,5 +128,8 @@ class _ChatPageState extends State<ChatPage> {
     print(texto);
     _textController.clear();
     _focusNode.requestFocus();
+    setState(() {
+      _isWrite = false;
+    });
   }
 }
