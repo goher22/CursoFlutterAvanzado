@@ -146,4 +146,12 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
       _isWrite = false;
     });
   }
+
+  @override
+  void dispose() {
+    for (var message in _messages) {
+      message.animationController.dispose();
+    }
+    super.dispose();
+  }
 }
