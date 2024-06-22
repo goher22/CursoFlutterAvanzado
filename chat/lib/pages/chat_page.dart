@@ -1,8 +1,18 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
 
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  final _textController = TextEditingController();
+  final _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,9 +57,58 @@ class ChatPage extends StatelessWidget {
             ),
             Container(
               color: Colors.white,
-              height: 100,
+              child: _inputChat(),
             )
           ],
         ));
+  }
+
+  Widget _inputChat() {
+    return SafeArea(
+      child: Container(
+        margin: const EdgeInsets.symmetric(
+          horizontal: 8.0,
+        ),
+        child: Row(
+          children: [
+            Flexible(
+              child: TextField(
+                decoration: const InputDecoration.collapsed(
+                  hintText: "Enviar mensaje",
+                ),
+                controller: _textController,
+                focusNode: _focusNode,
+                onChanged: (String texto) {},
+                onSubmitted: _handleSubmit,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: Platform.isIOS
+                  ? CupertinoButton(
+                      child: Text("Enviar"),
+                      onPressed: () {},
+                    )
+                  : Container(
+                      margin: EdgeInsets.symmetric(horizontal: 4.0),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.send,
+                          color: Colors.blue[400],
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  _handleSubmit(String texto) {
+    print(texto);
+    _textController.clear();
+    _focusNode.requestFocus();
   }
 }
