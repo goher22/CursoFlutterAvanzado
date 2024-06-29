@@ -1,4 +1,6 @@
+import 'package:chat/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/button_blue.dart';
 import '../widgets/custom_input.dart';
@@ -74,8 +76,13 @@ class __FormStateState extends State<_Form> {
           ButtonBlue(
             text: 'Ingrese',
             onPressed: () {
-              print(emailController.text);
-              print(passwordController.text);
+              final authService =
+                  Provider.of<AuthService>(context, listen: false);
+
+              authService.login(
+                emailController.text,
+                passwordController.text,
+              );
             },
           ),
         ],
