@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +16,7 @@ class LoadingPage extends StatelessWidget {
       body: FutureBuilder(
         future: checkLoginState(context),
         builder: (context, snapshot) {
-          return Center(
+          return const Center(
             child: Text("Espere..."),
           );
         },
