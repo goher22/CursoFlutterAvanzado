@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../helpers/show_alert.dart';
+import '../services/auth_service.dart';
 import '../widgets/button_blue.dart';
 import '../widgets/custom_input.dart';
 import '../widgets/labels.dart';
@@ -55,6 +58,7 @@ class __FormStateState extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Container(
       margin: const EdgeInsets.only(top: 40),
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -79,10 +83,25 @@ class __FormStateState extends State<_Form> {
           ),
           ButtonBlue(
             text: 'Registrar',
-            onPressed: () {
-              print(emailController.text);
-              print(passwordController.text);
-            },
+            onPressed: authService.authentication
+                ? null
+                : () async {
+                    try {
+                      FocusScope.of(context).unfocus();
+                      await authService.register(
+                        nameController.text.trim(),
+                        emailController.text.trim(),
+                        passwordController.text.trim(),
+                      );
+                      Navigator.pushReplacementNamed(context, "user");
+                    } catch (e) {
+                      showAlert(
+                        context,
+                        "Login incorrecto",
+                        e.toString(),
+                      );
+                    }
+                  },
           ),
         ],
       ),

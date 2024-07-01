@@ -88,8 +88,11 @@ class __FormStateState extends State<_Form> {
                       );
                       Navigator.pushReplacementNamed(context, "user");
                     } catch (e) {
-                      showAlert(context, "Login incorrecto",
-                          "Revise sus credenciales");
+                      showAlert(
+                        context,
+                        "Login incorrecto",
+                        "Revise sus credenciales",
+                      );
                     }
                   },
           ),
