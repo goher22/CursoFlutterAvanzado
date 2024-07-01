@@ -33,9 +33,11 @@ class AuthService with ChangeNotifier {
       if (resp.statusCode == 200) {
         final loginResponse = loginResponseFromJson(resp.body);
         user = loginResponse.user;
+      } else {
+        throw "Error";
       }
     } catch (e) {
-      print(e.toString());
+      rethrow;
     } finally {
       authentication = false;
     }

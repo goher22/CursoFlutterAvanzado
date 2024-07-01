@@ -2,6 +2,7 @@ import 'package:chat/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../helpers/show_alert.dart';
 import '../widgets/button_blue.dart';
 import '../widgets/custom_input.dart';
 import '../widgets/labels.dart';
@@ -78,12 +79,17 @@ class __FormStateState extends State<_Form> {
             text: 'Ingrese',
             onPressed: authService.authentication
                 ? null
-                : () {
-                    FocusScope.of(context).unfocus();
-                    authService.login(
-                      emailController.text.trim(),
-                      passwordController.text.trim(),
-                    );
+                : () async {
+                    try {
+                      FocusScope.of(context).unfocus();
+                      await authService.login(
+                        emailController.text.trim(),
+                        passwordController.text.trim(),
+                      );
+                    } catch (e) {
+                      showAlert(context, "Login incorrecto",
+                          "Revise sus credenciales");
+                    }
                   },
           ),
         ],
