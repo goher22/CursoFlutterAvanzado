@@ -86,6 +86,7 @@ class __FormStateState extends State<_Form> {
                         emailController.text.trim(),
                         passwordController.text.trim(),
                       );
+                      Navigator.pushReplacementNamed(context, "user");
                     } catch (e) {
                       showAlert(context, "Login incorrecto",
                           "Revise sus credenciales");
