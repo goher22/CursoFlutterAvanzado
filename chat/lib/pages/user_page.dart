@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../models/user.dart';
+import '../services/socket_service.dart';
 
 class UsuariosPage extends StatefulWidget {
   const UsuariosPage({super.key});
@@ -25,6 +26,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
+    final socketService = Provider.of<SocketService>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -41,6 +43,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
             color: Colors.black87,
           ),
           onPressed: () {
+            socketService.disconnect();
             AuthService.deleteToken();
             Navigator.pushReplacementNamed(context, "login");
           },

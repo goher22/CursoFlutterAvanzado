@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../helpers/show_alert.dart';
 import '../services/auth_service.dart';
+import '../services/socket_service.dart';
 import '../widgets/button_blue.dart';
 import '../widgets/custom_input.dart';
 import '../widgets/labels.dart';
@@ -59,6 +60,7 @@ class __FormStateState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
+    final socketService = Provider.of<SocketService>(context);
     return Container(
       margin: const EdgeInsets.only(top: 40),
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -93,6 +95,7 @@ class __FormStateState extends State<_Form> {
                         emailController.text.trim(),
                         passwordController.text.trim(),
                       );
+                      socketService.connect();
                       Navigator.pushReplacementNamed(context, "user");
                     } catch (e) {
                       showAlert(
