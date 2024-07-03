@@ -31,6 +31,24 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     chatService = Provider.of<ChatService>(context, listen: false);
     socketService = Provider.of<SocketService>(context, listen: false);
     authService = Provider.of<AuthService>(context, listen: false);
+
+    socketService.socket.on('mensaje-personal', _listenerMessage);
+  }
+
+  void _listenerMessage(dynamic data) {
+    ChatMessage message = ChatMessage(
+      text: data["mensaje"],
+      uid: data['de'],
+      animationController: AnimationController(
+        vsync: this,
+        duration: const Duration(microseconds: 300),
+      ),
+    );
+    setState(() {
+      _messages.insert(0, message);
+    });
+
+    message.animationController.forward();
   }
 
   @override
@@ -176,6 +194,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     for (var message in _messages) {
       message.animationController.dispose();
     }
+
+    socketService.socket.off('mensaje-personal');
     super.dispose();
   }
 }

@@ -18,6 +18,7 @@ io.on('connection', client => {
     client.join(uid);
 
     client.on('mensaje-personal', (payload) => {
+        io.to(payload.para).emit('mensaje-personal', payload);
         console.log(payload);
     });
 
