@@ -15,6 +15,12 @@ io.on('connection', client => {
 
     userConnect(uid);
 
+    client.join(uid);
+
+    client.on('mensaje-personal', (payload) => {
+        console.log(payload);
+    });
+
     client.on('disconnect', () => {
         userDesConnect(uid);
     });
