@@ -1,6 +1,6 @@
 const { validationJWT } = require('../helpers/jwt');
 const { io } = require('../index');
-const { userConnect, userDesConnect } = require('../controllers/socket');
+const { userConnect, userDesConnect, saveMessage } = require('../controllers/socket');
 
 
 // Mensajes de Sockets
@@ -17,9 +17,9 @@ io.on('connection', client => {
 
     client.join(uid);
 
-    client.on('mensaje-personal', (payload) => {
+    client.on('mensaje-personal', async (payload) => {
+        await saveMessage(payload);
         io.to(payload.para).emit('mensaje-personal', payload);
-        console.log(payload);
     });
 
     client.on('disconnect', () => {
