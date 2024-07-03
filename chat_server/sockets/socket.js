@@ -1,5 +1,6 @@
 const { validationJWT } = require('../helpers/jwt');
 const { io } = require('../index');
+const { userConnect, userDesConnect } = require('../controllers/socket');
 
 
 // Mensajes de Sockets
@@ -12,10 +13,10 @@ io.on('connection', client => {
         return client.disconnect();
     }
 
-    console.log('Cliente Autenticado');
+    userConnect(uid);
 
     client.on('disconnect', () => {
-        console.log('Cliente desconectado');
+        userDesConnect(uid);
     });
 
 
