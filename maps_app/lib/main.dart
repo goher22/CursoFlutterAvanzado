@@ -19,8 +19,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Material App',
-        home: GpsAccessScreen());
+      debugShowCheckedModeBanner: false,
+      title: 'Material App',
+      home: LoadingScreen(),
+    );
   }
 }
