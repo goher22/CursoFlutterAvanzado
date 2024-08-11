@@ -34,4 +34,9 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
     });
     return isEnable;
   }
+
+  @override
+  Future<void> close() {
+    return super.close();
+  }
 }
