@@ -44,7 +44,10 @@ class _AccessButton extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-          onPressed: () {},
+          onPressed: () {
+            final gpsBloc = BlocProvider.of<GpsBloc>(context);
+            gpsBloc.askGpsAccess();
+          },
         )
       ],
     );
