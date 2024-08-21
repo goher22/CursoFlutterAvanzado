@@ -8,9 +8,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 part 'location_event.dart';
 part 'location_state.dart';
 
-class LocationBloc extends Bloc<OnNewUserLocation, LocationState> {
+class LocationBloc extends Bloc<LocationEvent, LocationState> {
   StreamSubscription<Position>? positionStream;
   LocationBloc() : super(const LocationState()) {
+    on<OnStartFollowingUser>(
+        (event, emit) => emit(state.copyWith(followingUser: true)));
+
+    on<OnStopFollowingUser>(
+        (event, emit) => emit(state.copyWith(followingUser: false)));
+
     on<OnNewUserLocation>((event, emit) {
       emit(state.copyWith(
         lastKnowLocation: event.newLocation,
@@ -27,13 +33,14 @@ class LocationBloc extends Bloc<OnNewUserLocation, LocationState> {
   void startFollowingUser() {
     positionStream = Geolocator.getPositionStream().listen((event) {
       final position = event;
+      add(OnStartFollowingUser());
       add(OnNewUserLocation(LatLng(position.latitude, position.longitude)));
     });
   }
 
   void stopFollowingUser() {
     positionStream?.cancel();
-    print('stopFollowingUser');
+    add(OnStopFollowingUser());
   }
 
   @override
