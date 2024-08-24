@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:maps_app/blocs/blocs.dart';
-import 'package:maps_app/views/map_view.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../blocs/blocs.dart';
+import '../views/map_view.dart';
 import '../widgets/btn_follow_user.dart';
 import '../widgets/btn_location.dart';
+import '../widgets/btn_toggle_user_route.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -41,13 +43,18 @@ class _MapScreenState extends State<MapScreen> {
           }
 
           return BlocBuilder<MapBloc, MapState>(
-            builder: (context, state) {
+            builder: (context, mapState) {
+              Map<String, Polyline> polyline = Map.from(mapState.polylines);
+              if (!mapState.showMyRoute) {
+                polyline.removeWhere((key, value) => key == 'myRoute');
+              }
+
               return SingleChildScrollView(
                 child: Stack(
                   children: [
                     MapView(
                       initialLocation: locationState.lastKnowLocation!,
-                      polylines: state.polylines.values.toSet(),
+                      polylines: polyline.values.toSet(),
                     ),
                   ],
                 ),
@@ -60,6 +67,7 @@ class _MapScreenState extends State<MapScreen> {
       floatingActionButton: const Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          BtnToggleUserRouter(),
           BtnFollowUser(),
           BtnCurrentLocation(),
         ],
