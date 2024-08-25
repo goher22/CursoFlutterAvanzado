@@ -85,7 +85,10 @@ class _BtnBack extends StatelessWidget {
         maxRadius: 30,
         backgroundColor: Colors.white,
         child: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              BlocProvider.of<SearchBloc>(context)
+                  .add(OnDeactivateManualMarkerEvent());
+            },
             icon: const Icon(
               Icons.arrow_back_ios_new,
               color: Colors.black,
