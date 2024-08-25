@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:maps_app/screens/screens.dart';
 
 import 'blocs/blocs.dart';
+import 'services/traffic_service.dart';
 
 void main() {
   return runApp(
@@ -15,7 +16,8 @@ void main() {
             locationBloc: BlocProvider.of<LocationBloc>(context),
           ),
         ),
-        BlocProvider(create: (context) => SearchBloc()),
+        BlocProvider(
+            create: (context) => SearchBloc(trafficService: TrafficService())),
       ],
       child: const MyApp(),
     ),
