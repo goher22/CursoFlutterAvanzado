@@ -22,5 +22,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   Future getCootsStartToEnd(LatLng start, LatLng end) async {
     final resp = await trafficService.getCoorsStartToEnd(start, end);
+
+    return resp;
   }
 }

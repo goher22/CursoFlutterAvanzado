@@ -9,6 +9,7 @@ class TrafficInterceptor extends Interceptor {
     options.queryParameters.addAll({
       'alternatives': true,
       'geometries': 'polyline',
+      'language': 'es',
       'overview': 'simplified',
       'steps': false,
       'access_token': accessToken,
