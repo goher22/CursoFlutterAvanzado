@@ -7,6 +7,7 @@ import '../views/map_view.dart';
 import '../widgets/btn_follow_user.dart';
 import '../widgets/btn_location.dart';
 import '../widgets/btn_toggle_user_route.dart';
+import '../widgets/manual_marker.dart';
 import '../widgets/search_bar_custom.dart';
 
 class MapScreen extends StatefulWidget {
@@ -57,7 +58,8 @@ class _MapScreenState extends State<MapScreen> {
                       initialLocation: locationState.lastKnowLocation!,
                       polylines: polyline.values.toSet(),
                     ),
-                    const SearchBarCustom()
+                    const SearchBarCustom(),
+                    const ManualMarker()
                   ],
                 ),
               );
