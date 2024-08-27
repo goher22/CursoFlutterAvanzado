@@ -6,25 +6,30 @@ class MapState extends Equatable {
   final bool showMyRoute;
 
   final Map<String, Polyline> polylines;
+  final Map<String, Marker> markes;
 
   const MapState({
     this.isMapInitialized = false,
     this.isFollowUser = true,
     this.showMyRoute = true,
     Map<String, Polyline>? polylines,
-  }) : polylines = polylines ?? const {};
+    Map<String, Marker>? markes,
+  })  : polylines = polylines ?? const {},
+        markes = markes ?? const {};
 
   MapState copyWith({
     bool? isMapInitialized,
     bool? isFollowUser,
     bool? showMyRoute,
     Map<String, Polyline>? polylines,
+    Map<String, Marker>? markes,
   }) =>
       MapState(
         isMapInitialized: isMapInitialized ?? this.isMapInitialized,
         isFollowUser: isFollowUser ?? this.isFollowUser,
         showMyRoute: showMyRoute ?? this.showMyRoute,
         polylines: polylines ?? this.polylines,
+        markes: markes ?? this.markes,
       );
 
   @override
@@ -33,5 +38,6 @@ class MapState extends Equatable {
         isFollowUser,
         showMyRoute,
         polylines,
+        markes,
       ];
 }
