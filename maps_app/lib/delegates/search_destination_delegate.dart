@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../blocs/location/location_bloc.dart';
 import '../blocs/search/search_bloc.dart';
@@ -54,7 +55,15 @@ class SearchDestinationDelegate extends SearchDelegate<SearchResult> {
               title: Text(place.properties.namePreferred),
               subtitle: Text(place.properties.fullAddress),
               onTap: () {
-                print(place.properties.namePreferred);
+                final result = SearchResult(
+                  cancel: false,
+                  manual: false,
+                  position: LatLng(
+                    place.properties.coordinates.latitude,
+                    place.properties.coordinates.longitude,
+                  ),
+                );
+                close(context, result);
               },
             );
           },
