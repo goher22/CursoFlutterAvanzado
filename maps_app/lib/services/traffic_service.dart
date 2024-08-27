@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../models/geocode_response.dart';
 import '../models/traffic_response.dart';
 import 'geocode_interceptor.dart';
 import 'traffic_interceptor.dart';
@@ -28,7 +29,8 @@ class TrafficService {
     return data;
   }
 
-  Future getResultsByQuery(LatLng proximity, String query) async {
+  Future<List<Feature>> getResultsByQuery(
+      LatLng proximity, String query) async {
     if (query.isEmpty) return [];
     final url = '$_baseGeocodeUrl/$query';
 
@@ -37,6 +39,8 @@ class TrafficService {
       "latitude": proximity.latitude,
     });
 
-    return [];
+    final geocodeResponse = GeocodeResponse.fromJson(resp.data);
+
+    return geocodeResponse.features;
   }
 }
