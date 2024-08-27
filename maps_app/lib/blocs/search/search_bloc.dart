@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_polyline_algorithm/google_polyline_algorithm.dart';
+import 'package:maps_app/models/geocode_response.dart';
 
 import '../../models/route_destination.dart';
 import '../../services/traffic_service.dart';
@@ -14,12 +15,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc({
     required this.trafficService,
   }) : super(const SearchState()) {
-    on<SearchEvent>((event, emit) {
-      on<OnActivateManualMarkerEvent>(
-          (event, emit) => emit(state.copyWith(displayManualMarker: true)));
-      on<OnDeactivateManualMarkerEvent>(
-          (event, emit) => emit(state.copyWith(displayManualMarker: false)));
-    });
+    on<OnActivateManualMarkerEvent>(
+        (event, emit) => emit(state.copyWith(displayManualMarker: true)));
+    on<OnDeactivateManualMarkerEvent>(
+        (event, emit) => emit(state.copyWith(displayManualMarker: false)));
+    on<OnNewPlacesFoundEvent>(
+        (event, emit) => emit(state.copyWith(places: event.places)));
   }
 
   Future getCootsStartToEnd(LatLng start, LatLng end) async {
@@ -46,5 +47,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       duration: duration,
       distance: distance,
     );
+  }
+
+  Future getGeoCodeByQuery(LatLng proximity, String query) async {
+    final respons = await trafficService.getResultsByQuery(proximity, query);
+    add(OnNewPlacesFoundEvent(respons));
   }
 }

@@ -7,7 +7,7 @@ class GeocodeInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     options.queryParameters.addAll({
-      "limit": "7",
+      "limit": 7,
       "language": "es",
       "access_token": accessToken,
     });

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../blocs/location/location_bloc.dart';
+import '../blocs/search/search_bloc.dart';
 import '../models/search_result.dart';
 
 class SearchDestinationDelegate extends SearchDelegate<SearchResult> {
@@ -33,7 +36,17 @@ class SearchDestinationDelegate extends SearchDelegate<SearchResult> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return const Text("buildResults");
+    final searchBloc = BlocProvider.of<SearchBloc>(context);
+    final proximity =
+        BlocProvider.of<LocationBloc>(context).state.lastKnowLocation;
+
+    searchBloc.getGeoCodeByQuery(proximity!, query);
+
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state) {
+        return Text("Resultados ${state.places.length}");
+      },
+    );
   }
 
   @override
