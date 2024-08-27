@@ -63,6 +63,7 @@ class SearchDestinationDelegate extends SearchDelegate<SearchResult> {
                     place.properties.coordinates.longitude,
                   ),
                 );
+                searchBloc.add(AddToHistoryEvent(place));
                 close(context, result);
               },
             );
@@ -74,6 +75,7 @@ class SearchDestinationDelegate extends SearchDelegate<SearchResult> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    final history = BlocProvider.of<SearchBloc>(context).state.history;
     return ListView(
       children: [
         ListTile(
@@ -91,7 +93,28 @@ class SearchDestinationDelegate extends SearchDelegate<SearchResult> {
             final result = SearchResult(cancel: false, manual: true);
             close(context, result);
           },
-        )
+        ),
+        ...history.map(
+          (place) => ListTile(
+            title: Text(place.properties.namePreferred),
+            subtitle: Text(place.properties.fullAddress),
+            leading: const Icon(
+              Icons.history,
+              color: Colors.black,
+            ),
+            onTap: () {
+              final result = SearchResult(
+                cancel: false,
+                manual: false,
+                position: LatLng(
+                  place.properties.coordinates.latitude,
+                  place.properties.coordinates.longitude,
+                ),
+              );
+              close(context, result);
+            },
+          ),
+        ),
       ],
     );
   }
