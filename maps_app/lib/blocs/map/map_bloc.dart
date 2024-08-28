@@ -102,9 +102,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     final endMarker = Marker(
       markerId: const MarkerId("end"),
       position: destination.points.last,
-      infoWindow: const InfoWindow(
-        title: 'Final',
-        snippet: 'Este es el punto final de mi ruta',
+      infoWindow: InfoWindow(
+        title: destination.endDestination.properties.namePreferred,
+        snippet: destination.endDestination.properties.fullAddress,
       ),
     );
 
