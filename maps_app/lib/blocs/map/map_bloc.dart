@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:maps_app/helpers/custom_image_marker.dart';
 import 'package:maps_app/models/route_destination.dart';
 
 import '../../themes/WY.dart';
@@ -90,6 +91,8 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     double tripDuration = (destination.duration / 60).floorToDouble();
 
+    final startMaker = await getAssetImageMarker();
+
     final startMarker = Marker(
       markerId: const MarkerId("start"),
       position: destination.points.first,
@@ -102,6 +105,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     final endMarker = Marker(
       markerId: const MarkerId("end"),
       position: destination.points.last,
+      icon: startMaker,
       infoWindow: InfoWindow(
         title: destination.endDestination.properties.namePreferred,
         snippet: destination.endDestination.properties.fullAddress,
