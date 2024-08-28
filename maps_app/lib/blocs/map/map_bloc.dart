@@ -84,12 +84,18 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       endCap: Cap.roundCap,
     );
 
+    double kms = destination.distance / 1000;
+    kms = (kms * 100).floorToDouble();
+    kms /= 100;
+
+    double tripDuration = (destination.duration / 60).floorToDouble();
+
     final startMarker = Marker(
       markerId: const MarkerId("start"),
       position: destination.points.first,
-      infoWindow: const InfoWindow(
+      infoWindow: InfoWindow(
         title: 'Inicio',
-        snippet: 'Este es el punto inicio de mi ruta',
+        snippet: 'Kms: $kms, duration: $tripDuration',
       ),
     );
 
