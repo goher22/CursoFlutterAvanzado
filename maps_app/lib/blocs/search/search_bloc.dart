@@ -59,6 +59,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       points: latLngList,
       duration: duration,
       distance: distance,
+      endDestination: endDestination,
     );
   }
 
