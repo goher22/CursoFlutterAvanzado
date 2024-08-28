@@ -10,8 +10,7 @@ class TrafficService {
   final Dio _dioTraffic;
   final Dio _dioGeocode;
   final String _baseTrafficUrl = 'https://api.mapbox.com/directions/v5/mapbox';
-  final String _baseGeocodeUrl =
-      'https://api.mapbox.com/search/geocode/v6/forward';
+  final String _baseGeocodeUrl = 'https://api.mapbox.com/search/geocode/v6';
 
   TrafficService()
       : _dioTraffic = Dio()..interceptors.add(TrafficInterceptor()),
@@ -20,7 +19,7 @@ class TrafficService {
   Future<TrafficResponse> getCoorsStartToEnd(LatLng start, LatLng end) async {
     final coorsString =
         '${start.longitude},${start.latitude};${end.longitude},${end.latitude}';
-    final url = '$_baseTrafficUrl/driving/$coorsString';
+    final url = '$_baseTrafficUrl/forward/driving/$coorsString';
 
     final resp = await _dioTraffic.get(url);
 
@@ -37,10 +36,24 @@ class TrafficService {
     final resp = await _dioGeocode.get(url, queryParameters: {
       "q": query,
       "proximity": "${proximity.longitude},${proximity.latitude} ",
+      "limit": 7,
     });
 
     final geocodeResponse = GeocodeResponse.fromJson(resp.data);
 
     return geocodeResponse.features;
+  }
+
+  Future<Feature> getInformationByCoors(LatLng coors) async {
+    final url =
+        '$_baseGeocodeUrl/reverse?longitude=${coors.longitude}&latitude=${coors.latitude}';
+
+    final resp = await _dioGeocode.get(url, queryParameters: {
+      'limit': 1,
+    });
+
+    final data = GeocodeResponse.fromJson(resp.data);
+
+    return data.features[0];
   }
 }
