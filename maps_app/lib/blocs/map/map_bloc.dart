@@ -5,7 +5,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:maps_app/helpers/custom_image_marker.dart';
 import 'package:maps_app/helpers/widget_to_marker.dart';
 import 'package:maps_app/models/route_destination.dart';
 
