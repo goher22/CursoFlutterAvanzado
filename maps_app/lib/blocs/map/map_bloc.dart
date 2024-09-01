@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps_app/helpers/custom_image_marker.dart';
+import 'package:maps_app/helpers/widget_to_marker.dart';
 import 'package:maps_app/models/route_destination.dart';
 
 import '../../themes/WY.dart';
@@ -89,19 +90,24 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     kms = (kms * 100).floorToDouble();
     kms /= 100;
 
-    double tripDuration = (destination.duration / 60).floorToDouble();
+    int tripDuration = (destination.duration / 60).floorToDouble().toInt();
 
-    final startMaker = await getAssetImageMarker();
-    final endMaker = await getNetworkImageMarker();
+    // final startMaker = await getAssetImageMarker();
+    // final endMaker = await getNetworkImageMarker();
+
+    final startMaker = await getStartCustomMarker(tripDuration, "Mi ubicación");
+    final endMaker = await getEndCustomMarker(
+        kms.toInt(), destination.endDestination.properties.fullAddress);
 
     final startMarker = Marker(
+      anchor: const Offset(0.1, 1),
       markerId: const MarkerId("start"),
       position: destination.points.first,
       icon: startMaker,
-      infoWindow: InfoWindow(
-        title: 'Inicio',
-        snippet: 'Kms: $kms, duration: $tripDuration',
-      ),
+      // infoWindow: InfoWindow(
+      //   title: 'Inicio',
+      //   snippet: 'Kms: $kms, duration: $tripDuration',
+      // ),
     );
 
     final endMarker = Marker(
@@ -109,10 +115,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       position: destination.points.last,
       icon: endMaker,
       // anchor: const Offset(0, 0),
-      infoWindow: InfoWindow(
-        title: destination.endDestination.properties.namePreferred,
-        snippet: destination.endDestination.properties.fullAddress,
-      ),
+      // infoWindow: InfoWindow(
+      //   title: destination.endDestination.properties.namePreferred,
+      //   snippet: destination.endDestination.properties.fullAddress,
+      // ),
     );
 
     final currentPolylines = Map<String, Polyline>.from(state.polylines);
@@ -129,7 +135,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     await Future.delayed(const Duration(milliseconds: 300));
 
-    _mapController?.showMarkerInfoWindow(const MarkerId("start"));
+    // _mapController?.showMarkerInfoWindow(const MarkerId("start"));
   }
 
   void moveCamera(LatLng newLocation) {
