@@ -2,20 +2,33 @@ PODS:
   - Flutter (1.0.0)
   - flutter_credit_card (0.0.1):
     - Flutter
+  - Stripe (19.4.1)
+  - stripe_payment (1.0.0):
+    - Flutter
+    - Stripe (~> 19.4.0)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_credit_card (from `.symlinks/plugins/flutter_credit_card/ios`)
+  - stripe_payment (from `.symlinks/plugins/stripe_payment/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Stripe
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   flutter_credit_card:
     :path: ".symlinks/plugins/flutter_credit_card/ios"
+  stripe_payment:
+    :path: ".symlinks/plugins/stripe_payment/ios"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_credit_card: 48fb35065294868bc6a3e7f18a42f28929b84f48
+  Stripe: 5914399ac5878056b985d56b409cb4bb1e7fc7e8
+  stripe_payment: 1cbe9c339c21b5ecf01035e80eea351067c67c56
 
 PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
 
