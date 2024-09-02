@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:stripe_app/data/tarjetas.dart';
 
+import '../widgets/total_pay_button.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -42,6 +44,10 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
+          ),
+          Positioned(
+            bottom: 0,
+            child: TotalPayButton(),
           ),
         ],
       ),
