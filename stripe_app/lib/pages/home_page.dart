@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:stripe_app/data/tarjetas.dart';
 import 'package:stripe_app/pages/tarjeta_page.dart';
 
+import '../bloc/pagar/pagar_bloc.dart';
 import '../helpers/navegar_fadein.dart';
 import '../widgets/total_pay_button.dart';
 
@@ -38,6 +40,8 @@ class HomePage extends StatelessWidget {
                 final tarjeta = tarjetas[i];
                 return GestureDetector(
                   onDoubleTap: () {
+                    BlocProvider.of<PagarBloc>(context)
+                        .add(OnSeleccionarTarjeta(tarjeta));
                     Navigator.push(
                       context,
                       navegarMapaFadeIn(
