@@ -58,7 +58,7 @@ class _BtnPay extends StatelessWidget {
   Widget buildButtonTarjeta(BuildContext context) {
     return MaterialButton(
       height: 45,
-      minWidth: 150,
+      minWidth: 170,
       shape: const StadiumBorder(),
       elevation: 0,
       color: Colors.black,
